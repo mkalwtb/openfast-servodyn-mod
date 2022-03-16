@@ -499,6 +499,13 @@ IMPLICIT NONE
     TYPE(MeshType) , DIMENSION(:), ALLOCATABLE  :: NStCMotionMesh      !< StC module nacelle      input motion mesh [-]
     TYPE(MeshType) , DIMENSION(:), ALLOCATABLE  :: TStCMotionMesh      !< StC module tower        input motion mesh [-]
     TYPE(MeshType) , DIMENSION(:), ALLOCATABLE  :: SStCMotionMesh      !< StC module substructure input motion mesh [-]
+    REAL(ReKi)  :: PlatformSurge 
+    REAL(ReKi)  :: PlatformHeave 
+    REAL(ReKi)  :: PlatformPitch 
+    REAL(ReKi)  :: TowerTopForeAftDisplacement 
+    REAL(ReKi)  :: PlatformSurgeRate 
+    REAL(ReKi)  :: PlatformHeaveRate 
+    REAL(ReKi)  :: PlatformPitchRate 
   END TYPE SrvD_InputType
 ! =======================
 ! =========  SrvD_OutputType  =======
@@ -13599,6 +13606,13 @@ IF (ALLOCATED(SrcInputData%SStCMotionMesh)) THEN
          IF (ErrStat>=AbortErrLev) RETURN
     ENDDO
 ENDIF
+    DstInputData%PlatformSurge = SrcInputData%PlatformSurge
+    DstInputData%PlatformHeave = SrcInputData%PlatformHeave
+    DstInputData%PlatformPitch = SrcInputData%PlatformPitch
+    DstInputData%TowerTopForeAftDisplacement = SrcInputData%TowerTopForeAftDisplacement
+    DstInputData%PlatformSurgeRate = SrcInputData%PlatformSurgeRate
+    DstInputData%PlatformHeaveRate = SrcInputData%PlatformHeaveRate
+    DstInputData%PlatformPitchRate = SrcInputData%PlatformPitchRate
  END SUBROUTINE SrvD_CopyInput
 
  SUBROUTINE SrvD_DestroyInput( InputData, ErrStat, ErrMsg )
@@ -13881,6 +13895,13 @@ ENDIF
       END IF
     END DO
   END IF
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformSurge
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformHeave
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformPitch
+      Re_BufSz   = Re_BufSz   + 1  ! TowerTopForeAftDisplacement
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformSurgeRate
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformHeaveRate
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformPitchRate
   IF ( Re_BufSz  .GT. 0 ) THEN 
      ALLOCATE( ReKiBuf(  Re_BufSz  ), STAT=ErrStat2 )
      IF (ErrStat2 /= 0) THEN 
@@ -14291,6 +14312,20 @@ ENDIF
       ENDIF
     END DO
   END IF
+    ReKiBuf(Re_Xferred) = InData%PlatformSurge
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformHeave
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformPitch
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%TowerTopForeAftDisplacement
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformSurgeRate
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformHeaveRate
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformPitchRate
+    Re_Xferred = Re_Xferred + 1
  END SUBROUTINE SrvD_PackInput
 
  SUBROUTINE SrvD_UnPackInput( ReKiBuf, DbKiBuf, IntKiBuf, Outdata, ErrStat, ErrMsg )
@@ -14804,6 +14839,20 @@ ENDIF
       IF(ALLOCATED(Int_Buf)) DEALLOCATE(Int_Buf)
     END DO
   END IF
+    OutData%PlatformSurge = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformHeave = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformPitch = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%TowerTopForeAftDisplacement = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformSurgeRate = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformHeaveRate = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformPitchRate = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
  END SUBROUTINE SrvD_UnPackInput
 
  SUBROUTINE SrvD_CopyOutput( SrcOutputData, DstOutputData, CtrlCode, ErrStat, ErrMsg )
@@ -16196,6 +16245,20 @@ IF (ALLOCATED(u_out%SStCMotionMesh) .AND. ALLOCATED(u1%SStCMotionMesh)) THEN
         CALL SetErrStat(ErrStat2, ErrMsg2, ErrStat, ErrMsg,RoutineName)
    ENDDO
 END IF ! check if allocated
+  b = -(u1%PlatformSurge - u2%PlatformSurge)
+  u_out%PlatformSurge = u1%PlatformSurge + b * ScaleFactor
+  b = -(u1%PlatformHeave - u2%PlatformHeave)
+  u_out%PlatformHeave = u1%PlatformHeave + b * ScaleFactor
+  b = -(u1%PlatformPitch - u2%PlatformPitch)
+  u_out%PlatformPitch = u1%PlatformPitch + b * ScaleFactor
+  b = -(u1%TowerTopForeAftDisplacement - u2%TowerTopForeAftDisplacement)
+  u_out%TowerTopForeAftDisplacement = u1%TowerTopForeAftDisplacement + b * ScaleFactor
+  b = -(u1%PlatformSurgeRate - u2%PlatformSurgeRate)
+  u_out%PlatformSurgeRate = u1%PlatformSurgeRate + b * ScaleFactor
+  b = -(u1%PlatformHeaveRate - u2%PlatformHeaveRate)
+  u_out%PlatformHeaveRate = u1%PlatformHeaveRate + b * ScaleFactor
+  b = -(u1%PlatformPitchRate - u2%PlatformPitchRate)
+  u_out%PlatformPitchRate = u1%PlatformPitchRate + b * ScaleFactor
  END SUBROUTINE SrvD_Input_ExtrapInterp1
 
 
@@ -16422,6 +16485,27 @@ IF (ALLOCATED(u_out%SStCMotionMesh) .AND. ALLOCATED(u1%SStCMotionMesh)) THEN
         CALL SetErrStat(ErrStat2, ErrMsg2, ErrStat, ErrMsg,RoutineName)
    ENDDO
 END IF ! check if allocated
+  b = (t(3)**2*(u1%PlatformSurge - u2%PlatformSurge) + t(2)**2*(-u1%PlatformSurge + u3%PlatformSurge))* scaleFactor
+  c = ( (t(2)-t(3))*u1%PlatformSurge + t(3)*u2%PlatformSurge - t(2)*u3%PlatformSurge ) * scaleFactor
+  u_out%PlatformSurge = u1%PlatformSurge + b  + c * t_out
+  b = (t(3)**2*(u1%PlatformHeave - u2%PlatformHeave) + t(2)**2*(-u1%PlatformHeave + u3%PlatformHeave))* scaleFactor
+  c = ( (t(2)-t(3))*u1%PlatformHeave + t(3)*u2%PlatformHeave - t(2)*u3%PlatformHeave ) * scaleFactor
+  u_out%PlatformHeave = u1%PlatformHeave + b  + c * t_out
+  b = (t(3)**2*(u1%PlatformPitch - u2%PlatformPitch) + t(2)**2*(-u1%PlatformPitch + u3%PlatformPitch))* scaleFactor
+  c = ( (t(2)-t(3))*u1%PlatformPitch + t(3)*u2%PlatformPitch - t(2)*u3%PlatformPitch ) * scaleFactor
+  u_out%PlatformPitch = u1%PlatformPitch + b  + c * t_out
+  b = (t(3)**2*(u1%TowerTopForeAftDisplacement - u2%TowerTopForeAftDisplacement) + t(2)**2*(-u1%TowerTopForeAftDisplacement + u3%TowerTopForeAftDisplacement))* scaleFactor
+  c = ( (t(2)-t(3))*u1%TowerTopForeAftDisplacement + t(3)*u2%TowerTopForeAftDisplacement - t(2)*u3%TowerTopForeAftDisplacement ) * scaleFactor
+  u_out%TowerTopForeAftDisplacement = u1%TowerTopForeAftDisplacement + b  + c * t_out
+  b = (t(3)**2*(u1%PlatformSurgeRate - u2%PlatformSurgeRate) + t(2)**2*(-u1%PlatformSurgeRate + u3%PlatformSurgeRate))* scaleFactor
+  c = ( (t(2)-t(3))*u1%PlatformSurgeRate + t(3)*u2%PlatformSurgeRate - t(2)*u3%PlatformSurgeRate ) * scaleFactor
+  u_out%PlatformSurgeRate = u1%PlatformSurgeRate + b  + c * t_out
+  b = (t(3)**2*(u1%PlatformHeaveRate - u2%PlatformHeaveRate) + t(2)**2*(-u1%PlatformHeaveRate + u3%PlatformHeaveRate))* scaleFactor
+  c = ( (t(2)-t(3))*u1%PlatformHeaveRate + t(3)*u2%PlatformHeaveRate - t(2)*u3%PlatformHeaveRate ) * scaleFactor
+  u_out%PlatformHeaveRate = u1%PlatformHeaveRate + b  + c * t_out
+  b = (t(3)**2*(u1%PlatformPitchRate - u2%PlatformPitchRate) + t(2)**2*(-u1%PlatformPitchRate + u3%PlatformPitchRate))* scaleFactor
+  c = ( (t(2)-t(3))*u1%PlatformPitchRate + t(3)*u2%PlatformPitchRate - t(2)*u3%PlatformPitchRate ) * scaleFactor
+  u_out%PlatformPitchRate = u1%PlatformPitchRate + b  + c * t_out
  END SUBROUTINE SrvD_Input_ExtrapInterp2
 
 

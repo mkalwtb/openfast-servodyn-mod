@@ -1057,6 +1057,15 @@ END IF
 
 
 !> * Records 120-129: User-defined variables 1-10; ignored in ServoDyn
+   
+    dll_data%avrSWAP(120) = u%PlatformSurge
+    dll_data%avrSWAP(121) = u%PlatformHeave
+    dll_data%avrSWAP(122) = u%PlatformPitch
+    dll_data%avrSWAP(123) = u%TowerTopForeAftDisplacement
+    dll_data%avrSWAP(124) = u%PlatformSurgeRate
+    dll_data%avrSWAP(125) = u%PlatformHeaveRate
+    dll_data%avrSWAP(126) = u%PlatformPitchRate
+
    ! Records 120:122 are outputs [see Retrieve_avrSWAP()]
    dll_data%avrSWAP(129) = size(dll_data%avrSWAP)           !> * Record 129: Maximum extent of the avrSWAP array
 

@@ -1563,6 +1563,9 @@ SUBROUTINE FAST_ProgStart(ThisProgVer)
 
    ! Display the copyright notice
    CALL DispCopyrightLicense( ThisProgVer%Name )
+   
+   CALL wrscr('openFAST 3.1.0 - ServoDyn SLOW States Mod v1.2')
+   CALL wrscr('Modification for writing SLOW states to the swap array of the controller interface.')
 
    CALL DispCompileRuntimeInfo
 

@@ -987,6 +987,14 @@ SUBROUTINE SrvD_InputSolve( p_FAST, m_FAST, u_SrvD, y_ED, y_IfW, y_OpFM, y_BD, y
    u_SrvD%HSS_Spd   = y_ED%HSS_Spd
    u_SrvD%RotSpeed  = y_ED%RotSpeed
    
+   u_SrvD%PlatformSurge = y_ED%PlatformSurge
+   u_SrvD%PlatformHeave = y_ED%PlatformHeave
+   u_SrvD%PlatformPitch = y_ED%PlatformPitch
+   u_SrvD%TowerTopForeAftDisplacement = y_ED%TowerTopForeAftDisplacement
+   u_SrvD%PlatformSurgeRate = y_ED%PlatformSurgeRate
+   u_SrvD%PlatformHeaveRate = y_ED%PlatformHeaveRate
+   u_SrvD%PlatformPitchRate = y_ED%PlatformPitchRate
+   
    IF ( p_FAST%CompElast == Module_BD )  THEN    
 
          ! translate "b" system output from BD into "c" system for SrvD

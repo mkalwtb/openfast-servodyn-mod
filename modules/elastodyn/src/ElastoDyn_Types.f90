@@ -873,6 +873,13 @@ IMPLICIT NONE
     REAL(ReKi)  :: NcIMURAys      !< Nacelle inertial measurement unit angular (rotational) acceleration (absolute) [rad/s^2]
     REAL(ReKi)  :: NcIMURAzs      !< Nacelle inertial measurement unit angular (rotational) acceleration (absolute) [rad/s^2]
     REAL(ReKi)  :: RotPwr      !< Rotor power (this is equivalent to the low-speed shaft power) [W]
+    REAL(ReKi)  :: PlatformSurge 
+    REAL(ReKi)  :: PlatformHeave 
+    REAL(ReKi)  :: PlatformPitch 
+    REAL(ReKi)  :: TowerTopForeAftDisplacement 
+    REAL(ReKi)  :: PlatformSurgeRate 
+    REAL(ReKi)  :: PlatformHeaveRate 
+    REAL(ReKi)  :: PlatformPitchRate 
   END TYPE ED_OutputType
 ! =======================
 CONTAINS
@@ -23519,6 +23526,13 @@ ENDIF
     DstOutputData%NcIMURAys = SrcOutputData%NcIMURAys
     DstOutputData%NcIMURAzs = SrcOutputData%NcIMURAzs
     DstOutputData%RotPwr = SrcOutputData%RotPwr
+    DstOutputData%PlatformSurge = SrcOutputData%PlatformSurge
+    DstOutputData%PlatformHeave = SrcOutputData%PlatformHeave
+    DstOutputData%PlatformPitch = SrcOutputData%PlatformPitch
+    DstOutputData%TowerTopForeAftDisplacement = SrcOutputData%TowerTopForeAftDisplacement
+    DstOutputData%PlatformSurgeRate = SrcOutputData%PlatformSurgeRate
+    DstOutputData%PlatformHeaveRate = SrcOutputData%PlatformHeaveRate
+    DstOutputData%PlatformPitchRate = SrcOutputData%PlatformPitchRate
  END SUBROUTINE ED_CopyOutput
 
  SUBROUTINE ED_DestroyOutput( OutputData, ErrStat, ErrMsg )
@@ -23809,6 +23823,13 @@ ENDIF
       Re_BufSz   = Re_BufSz   + 1  ! NcIMURAys
       Re_BufSz   = Re_BufSz   + 1  ! NcIMURAzs
       Re_BufSz   = Re_BufSz   + 1  ! RotPwr
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformSurge
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformHeave
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformPitch
+      Re_BufSz   = Re_BufSz   + 1  ! TowerTopForeAftDisplacement
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformSurgeRate
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformHeaveRate
+      Re_BufSz   = Re_BufSz   + 1  ! PlatformPitchRate
   IF ( Re_BufSz  .GT. 0 ) THEN 
      ALLOCATE( ReKiBuf(  Re_BufSz  ), STAT=ErrStat2 )
      IF (ErrStat2 /= 0) THEN 
@@ -24221,6 +24242,20 @@ ENDIF
     ReKiBuf(Re_Xferred) = InData%NcIMURAzs
     Re_Xferred = Re_Xferred + 1
     ReKiBuf(Re_Xferred) = InData%RotPwr
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformSurge
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformHeave
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformPitch
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%TowerTopForeAftDisplacement
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformSurgeRate
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformHeaveRate
+    Re_Xferred = Re_Xferred + 1
+    ReKiBuf(Re_Xferred) = InData%PlatformPitchRate
     Re_Xferred = Re_Xferred + 1
  END SUBROUTINE ED_PackOutput
 
@@ -24773,6 +24808,20 @@ ENDIF
     Re_Xferred = Re_Xferred + 1
     OutData%RotPwr = ReKiBuf(Re_Xferred)
     Re_Xferred = Re_Xferred + 1
+    OutData%PlatformSurge = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformHeave = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformPitch = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%TowerTopForeAftDisplacement = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformSurgeRate = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformHeaveRate = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
+    OutData%PlatformPitchRate = ReKiBuf(Re_Xferred)
+    Re_Xferred = Re_Xferred + 1
  END SUBROUTINE ED_UnPackOutput
 
 
@@ -25205,6 +25254,20 @@ END IF ! check if allocated
   y_out%NcIMURAzs = y1%NcIMURAzs + b * ScaleFactor
   b = -(y1%RotPwr - y2%RotPwr)
   y_out%RotPwr = y1%RotPwr + b * ScaleFactor
+  b = -(y1%PlatformSurge - y2%PlatformSurge)
+  y_out%PlatformSurge = y1%PlatformSurge + b * ScaleFactor
+  b = -(y1%PlatformHeave - y2%PlatformHeave)
+  y_out%PlatformHeave = y1%PlatformHeave + b * ScaleFactor
+  b = -(y1%PlatformPitch - y2%PlatformPitch)
+  y_out%PlatformPitch = y1%PlatformPitch + b * ScaleFactor
+  b = -(y1%TowerTopForeAftDisplacement - y2%TowerTopForeAftDisplacement)
+  y_out%TowerTopForeAftDisplacement = y1%TowerTopForeAftDisplacement + b * ScaleFactor
+  b = -(y1%PlatformSurgeRate - y2%PlatformSurgeRate)
+  y_out%PlatformSurgeRate = y1%PlatformSurgeRate + b * ScaleFactor
+  b = -(y1%PlatformHeaveRate - y2%PlatformHeaveRate)
+  y_out%PlatformHeaveRate = y1%PlatformHeaveRate + b * ScaleFactor
+  b = -(y1%PlatformPitchRate - y2%PlatformPitchRate)
+  y_out%PlatformPitchRate = y1%PlatformPitchRate + b * ScaleFactor
  END SUBROUTINE ED_Output_ExtrapInterp1
 
 
@@ -25369,6 +25432,27 @@ END IF ! check if allocated
   b = (t(3)**2*(y1%RotPwr - y2%RotPwr) + t(2)**2*(-y1%RotPwr + y3%RotPwr))* scaleFactor
   c = ( (t(2)-t(3))*y1%RotPwr + t(3)*y2%RotPwr - t(2)*y3%RotPwr ) * scaleFactor
   y_out%RotPwr = y1%RotPwr + b  + c * t_out
+  b = (t(3)**2*(y1%PlatformSurge - y2%PlatformSurge) + t(2)**2*(-y1%PlatformSurge + y3%PlatformSurge))* scaleFactor
+  c = ( (t(2)-t(3))*y1%PlatformSurge + t(3)*y2%PlatformSurge - t(2)*y3%PlatformSurge ) * scaleFactor
+  y_out%PlatformSurge = y1%PlatformSurge + b  + c * t_out
+  b = (t(3)**2*(y1%PlatformHeave - y2%PlatformHeave) + t(2)**2*(-y1%PlatformHeave + y3%PlatformHeave))* scaleFactor
+  c = ( (t(2)-t(3))*y1%PlatformHeave + t(3)*y2%PlatformHeave - t(2)*y3%PlatformHeave ) * scaleFactor
+  y_out%PlatformHeave = y1%PlatformHeave + b  + c * t_out
+  b = (t(3)**2*(y1%PlatformPitch - y2%PlatformPitch) + t(2)**2*(-y1%PlatformPitch + y3%PlatformPitch))* scaleFactor
+  c = ( (t(2)-t(3))*y1%PlatformPitch + t(3)*y2%PlatformPitch - t(2)*y3%PlatformPitch ) * scaleFactor
+  y_out%PlatformPitch = y1%PlatformPitch + b  + c * t_out
+  b = (t(3)**2*(y1%TowerTopForeAftDisplacement - y2%TowerTopForeAftDisplacement) + t(2)**2*(-y1%TowerTopForeAftDisplacement + y3%TowerTopForeAftDisplacement))* scaleFactor
+  c = ( (t(2)-t(3))*y1%TowerTopForeAftDisplacement + t(3)*y2%TowerTopForeAftDisplacement - t(2)*y3%TowerTopForeAftDisplacement ) * scaleFactor
+  y_out%TowerTopForeAftDisplacement = y1%TowerTopForeAftDisplacement + b  + c * t_out
+  b = (t(3)**2*(y1%PlatformSurgeRate - y2%PlatformSurgeRate) + t(2)**2*(-y1%PlatformSurgeRate + y3%PlatformSurgeRate))* scaleFactor
+  c = ( (t(2)-t(3))*y1%PlatformSurgeRate + t(3)*y2%PlatformSurgeRate - t(2)*y3%PlatformSurgeRate ) * scaleFactor
+  y_out%PlatformSurgeRate = y1%PlatformSurgeRate + b  + c * t_out
+  b = (t(3)**2*(y1%PlatformHeaveRate - y2%PlatformHeaveRate) + t(2)**2*(-y1%PlatformHeaveRate + y3%PlatformHeaveRate))* scaleFactor
+  c = ( (t(2)-t(3))*y1%PlatformHeaveRate + t(3)*y2%PlatformHeaveRate - t(2)*y3%PlatformHeaveRate ) * scaleFactor
+  y_out%PlatformHeaveRate = y1%PlatformHeaveRate + b  + c * t_out
+  b = (t(3)**2*(y1%PlatformPitchRate - y2%PlatformPitchRate) + t(2)**2*(-y1%PlatformPitchRate + y3%PlatformPitchRate))* scaleFactor
+  c = ( (t(2)-t(3))*y1%PlatformPitchRate + t(3)*y2%PlatformPitchRate - t(2)*y3%PlatformPitchRate ) * scaleFactor
+  y_out%PlatformPitchRate = y1%PlatformPitchRate + b  + c * t_out
  END SUBROUTINE ED_Output_ExtrapInterp2
 
 END MODULE ElastoDyn_Types

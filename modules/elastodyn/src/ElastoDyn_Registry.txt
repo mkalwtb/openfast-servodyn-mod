@@ -875,3 +875,10 @@ typedef	^	OutputType	ReKi	NcIMURAxs	-	-	-	"Nacelle inertial measurement unit ang
 typedef	^	OutputType	ReKi	NcIMURAys	-	-	-	"Nacelle inertial measurement unit angular (rotational) acceleration (absolute)"	rad/s^2
 typedef	^	OutputType	ReKi	NcIMURAzs	-	-	-	"Nacelle inertial measurement unit angular (rotational) acceleration (absolute)"	rad/s^2
 typedef	^	OutputType	ReKi	RotPwr	-	-	-	"Rotor power (this is equivalent to the low-speed shaft power)"	W
+typedef	^	OutputType	ReKi	PlatformSurge	-	-	-	
+typedef	^	OutputType	ReKi	PlatformHeave	-	-	-	
+typedef	^	OutputType	ReKi	PlatformPitch	-	-	-	
+typedef	^	OutputType	ReKi	TowerTopForeAftDisplacement	-	-	-	
+typedef	^	OutputType	ReKi	PlatformSurgeRate	-	-	-	
+typedef	^	OutputType	ReKi	PlatformHeaveRate	-	-	-	
+typedef	^	OutputType	ReKi	PlatformPitchRate	-	-	-	

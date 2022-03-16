@@ -1777,6 +1777,16 @@ END IF
    y%LSS_Spd  = x%QDT(DOF_GeAz)
    y%HSS_Spd  = ABS(p%GBRatio)*x%QDT(DOF_GeAz)
    y%RotSpeed = x%QDT(DOF_GeAz) + x%QDT(DOF_DrTr)
+
+   y%PlatformSurge = x%QT(DOF_Sg)
+   y%PlatformHeave = x%QT(DOF_Hv)
+   y%PlatformPitch = x%QT(DOF_P)
+
+   y%PlatformSurgeRate = x%QDT(DOF_Sg)
+   y%PlatformHeaveRate = x%QDT(DOF_Hv)
+   y%PlatformPitchRate = x%QDT(DOF_P)
+
+   y%TowerTopForeAftDisplacement = m%AllOuts(YawBrTDxt);
    
    IF ( t > 0.0_DbKi  )  THEN
 

@@ -511,3 +511,10 @@ typedef	^	OutputType	MeshType	NStCLoadMesh	{:}	-	-	"StC module nacelle      outp
 typedef	^	OutputType	MeshType	TStCLoadMesh	{:}	-	-	"StC module tower        output load mesh" -
 typedef	^	OutputType	MeshType	SStCLoadMesh	{:}	-	-	"StC module substructure output load mesh" -
 typedef	^	OutputType	SiKi	toSC	{:}	-	-	"A swap array: used to pass output data from the DLL controller to the supercontroller"	-
+typedef	^	InputType	ReKi	PlatformSurge	-	-	-	
+typedef	^	InputType	ReKi	PlatformHeave	-	-	-	
+typedef	^	InputType	ReKi	PlatformPitch	-	-	-	
+typedef	^	InputType	ReKi	TowerTopForeAftDisplacement	-	-	-	
+typedef	^	InputType	ReKi	PlatformSurgeRate	-	-	-	
+typedef	^	InputType	ReKi	PlatformHeaveRate	-	-	-	
+typedef	^	InputType	ReKi	PlatformPitchRate	-	-	-	
