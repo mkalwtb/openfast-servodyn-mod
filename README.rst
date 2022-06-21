@@ -1,3 +1,8 @@
+OpenFAST servodyn mod
+=====================
+ServoDyn SLOW States Mod v1.2
+Modification for writing SLOW states to the swap array of the controller interface.
+
 OpenFAST
 ========
 
